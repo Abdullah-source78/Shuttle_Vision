@@ -11,7 +11,7 @@ const Index = () => {
           <div className="inline-flex items-center justify-center bg-primary p-4 rounded-2xl mb-6">
             <Bus className="w-12 h-12 text-primary-foreground" />
           </div>
-          <h1 className="text-5xl font-bold text-foreground mb-4">Smart Transit Tracker</h1>
+          <h1 className="text-5xl font-bold text-foreground mb-4">Shuttle Vision</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Real-time GPS tracking, load estimation, and intelligent bus recommendations for smarter campus
             transportation

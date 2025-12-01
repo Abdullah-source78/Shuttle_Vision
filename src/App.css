@@ -103,7 +103,7 @@ const StudentPortal = () => {
               <Bus className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">Smart Transit</h1>
+              <h1 className="text-xl font-bold text-foreground">Shuttle Vision</h1>
               <p className="text-sm text-muted-foreground">Real-time Bus Tracking</p>
             </div>
           </div>
