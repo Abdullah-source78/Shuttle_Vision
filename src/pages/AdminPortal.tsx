@@ -50,7 +50,7 @@ const AdminPortal = () => {
 
   // LOGIN
   const handleLogin = () => {
-    if (username === '123' && password === '123') {
+    if (username === 'admin1' && password === '111' || username === 'admin2' && password === '222') {
       setIsAuthenticated(true);
       fetchBuses();
       fetchDrivers();

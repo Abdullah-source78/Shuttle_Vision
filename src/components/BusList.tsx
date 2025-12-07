@@ -43,7 +43,7 @@ export const BusList = ({ buses }: BusListProps) => {
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
         <h2 className="text-xl font-bold text-foreground">Active Buses</h2>
-        <Badge variant="destructive" className="ml-auto">
+        <Badge variant="default" className="ml-auto">
           {buses.length} buses
         </Badge>
       </div>

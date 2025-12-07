@@ -6,6 +6,7 @@ interface BusLocation {
   id: string;
   bus_number: string;
   route_name: string;
+  capacity: number;
   location?: {
     latitude: number;
     longitude: number;
@@ -25,43 +26,39 @@ export const TransitMap = ({ buses }: TransitMapProps) => {
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    // Initialize map centered on New York City (where our test data is)
+    // Initialize map if not already initialized
     if (!mapRef.current) {
-      mapRef.current = L.map(mapContainerRef.current).setView([40.7580, -73.9855], 13);
+      mapRef.current = L.map(mapContainerRef.current).setView([40.758, -73.9855], 13);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
       }).addTo(mapRef.current);
     }
 
-    // Create custom bus icon based on availability
+    // Create custom bus icon
     const createBusIcon = (availableSeats: number, capacity: number = 40) => {
       const fillPercentage = (availableSeats / capacity) * 100;
-      let color = "#ef4444"; // red for full
-      if (fillPercentage > 50) color = "#22c55e"; // green for plenty
-      else if (fillPercentage > 20) color = "#f59e0b"; // orange for filling up
+      let color = "#ef4444"; // red
+      if (fillPercentage > 50) color = "#22c55e"; // green
+      else if (fillPercentage > 20) color = "#f59e0b"; // orange
 
       return L.divIcon({
-        html: `
-          <div style="
-            background-color: ${color};
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 12px;
-            animation: pulse 2s infinite;
-          ">
-            🚌
-          </div>
-        `,
+        html: `<div style="
+          background-color: ${color};
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 3px solid white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+          font-size: 12px;
+          animation: pulse 2s infinite;
+        ">🚌</div>`,
         className: "",
         iconSize: [32, 32],
         iconAnchor: [16, 16],
@@ -70,31 +67,62 @@ export const TransitMap = ({ buses }: TransitMapProps) => {
 
     // Update markers
     buses.forEach((bus) => {
-      if (!bus.location) return;
+      let position: L.LatLngExpression;
+      let markerIcon: L.DivIcon;
 
-      const { latitude, longitude, available_seats } = bus.location;
-      const position: L.LatLngExpression = [latitude, longitude];
+      if (bus.location) {
+        // Bus has GPS
+        position = [bus.location.latitude, bus.location.longitude];
+        markerIcon = createBusIcon(bus.location.available_seats, bus.capacity);
+      } else {
+        // No GPS yet: placeholder position at 0,0
+        position = [0, 0];
+        markerIcon = L.divIcon({
+          html: `<div style="
+            background-color: #9ca3af;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+          ">❓</div>`,
+          className: "",
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+        });
+      }
 
       if (markersRef.current[bus.id]) {
         // Update existing marker
         markersRef.current[bus.id].setLatLng(position);
-        markersRef.current[bus.id].setIcon(createBusIcon(available_seats));
+        markersRef.current[bus.id].setIcon(markerIcon);
       } else {
         // Create new marker
-        const marker = L.marker(position, {
-          icon: createBusIcon(available_seats),
-        }).addTo(mapRef.current!);
+        const marker = L.marker(position, { icon: markerIcon }).addTo(mapRef.current!);
 
         marker.bindPopup(`
           <div style="font-family: system-ui; padding: 4px;">
             <strong style="font-size: 16px; color: #0891b2;">${bus.bus_number}</strong><br/>
             <span style="color: #64748b; font-size: 13px;">${bus.route_name}</span><br/>
             <div style="margin-top: 8px; padding: 6px; background: #f1f5f9; border-radius: 6px;">
-              <span style="font-size: 14px;">
-                <strong style="color: ${available_seats > 10 ? "#22c55e" : available_seats > 5 ? "#f59e0b" : "#ef4444"}">
-                  ${available_seats} seats
-                </strong> available
-              </span>
+              ${
+                bus.location
+                  ? `<span style="font-size: 14px;">
+                       <strong style="color: ${
+                         bus.location.available_seats > 10
+                           ? "#22c55e"
+                           : bus.location.available_seats > 5
+                           ? "#f59e0b"
+                           : "#ef4444"
+                       }">${bus.location.available_seats}</strong> available
+                     </span>`
+                  : "<em style='color:#9ca3af'>No GPS yet</em>"
+              }
             </div>
           </div>
         `);
@@ -103,7 +131,7 @@ export const TransitMap = ({ buses }: TransitMapProps) => {
       }
     });
 
-    // Remove markers for buses that no longer exist
+    // Remove markers that are no longer in the buses array
     Object.keys(markersRef.current).forEach((busId) => {
       if (!buses.find((b) => b.id === busId)) {
         mapRef.current?.removeLayer(markersRef.current[busId]);
@@ -111,18 +139,17 @@ export const TransitMap = ({ buses }: TransitMapProps) => {
       }
     });
 
-    // Adjust map bounds to show all buses
-    if (buses.length > 0 && buses.some((b) => b.location)) {
+    // Adjust bounds to include all buses with GPS
+    const gpsBuses = buses.filter((b) => b.location);
+    if (gpsBuses.length > 0) {
       const bounds = L.latLngBounds(
-        buses
-          .filter((b) => b.location)
-          .map((b) => [b.location!.latitude, b.location!.longitude] as L.LatLngExpression)
+        gpsBuses.map((b) => [b.location!.latitude, b.location!.longitude] as L.LatLngExpression)
       );
       mapRef.current?.fitBounds(bounds, { padding: [50, 50] });
     }
 
     return () => {
-      // Cleanup on unmount
+      // Cleanup markers on unmount
       if (mapRef.current) {
         Object.values(markersRef.current).forEach((marker) => {
           mapRef.current?.removeLayer(marker);

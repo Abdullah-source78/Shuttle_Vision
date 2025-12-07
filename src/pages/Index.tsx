@@ -27,110 +27,71 @@ const Index = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
-<Link to="/student" className="block">
-  <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg cursor-pointer">
-    <CardHeader>
-      <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
-        <Users className="w-8 h-8 text-primary" />
-      </div>
-      <CardTitle className="text-2xl">Student Portal</CardTitle>
-      <CardDescription className="text-base">
-        View all buses in real-time, check available seats, and see
-        estimated arrival times
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="w-full text-center">
-        <Button className="w-full" size="lg">
-          Open Student Portal
-        </Button>
-      </div>
-    </CardContent>
-  </Card>
-</Link>
+          <Link to="/student" className="block">
+            <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg cursor-pointer">
+              <CardHeader>
+                <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
+                  <Users className="w-8 h-8 text-primary" />
+                </div>
+                <CardTitle className="text-2xl">Student Portal</CardTitle>
+                <CardDescription className="text-base">
+                  View all buses in real-time, check available seats, and see
+                  estimated arrival times
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="w-full text-center">
+                  <Button className="w-full" size="lg">
+                    Open Student Portal
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
-<Link to="/driver" className="block">
-  <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg cursor-pointer">
-    <CardHeader>
-      <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
-        <MapPin className="w-8 h-8 text-primary" />
-      </div>
-      <CardTitle className="text-2xl">Driver Portal</CardTitle>
-      <CardDescription className="text-base">
-        Update your GPS location and available seat count to help
-                students track your bus
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="w-full text-center">
-        <Button className="w-full" size="lg">
-          Open Driver Portal
-        </Button>
-      </div>
-    </CardContent>
-  </Card>
-</Link>
+          <Link to="/driver" className="block">
+            <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg cursor-pointer">
+              <CardHeader>
+                <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
+                  <MapPin className="w-8 h-8 text-primary" />
+                </div>
+                <CardTitle className="text-2xl">Driver Portal</CardTitle>
+                <CardDescription className="text-base">
+                  Update your GPS location and available seat count to help
+                  students track your bus
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="w-full text-center">
+                  <Button className="w-full" size="lg">
+                    Open Driver Portal
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
-<Link to="/admin" className="block">
-  <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg cursor-pointer">
-    <CardHeader>
-      <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
-        <MapPin className="w-8 h-8 text-primary" />
-      </div>
-      <CardTitle className="text-2xl">Admin Portal</CardTitle>
-      <CardDescription className="text-base">
-       Modify and add drivers + buses
+          <Link to="/admin" className="block">
+            <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg cursor-pointer">
+              <CardHeader>
+                <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
+                  <MapPin className="w-8 h-8 text-primary" />
+                </div>
+                <CardTitle className="text-2xl">Admin Portal</CardTitle>
+                <CardDescription className="text-base">
+                  Modify and add drivers + buses
 
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="w-full text-center">
-        <Button className="w-full" size="lg">
-          Open Admin Portal
-        </Button>
-      </div>
-    </CardContent>
-  </Card>
-</Link>
-          
-          {/* <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg">
-            <CardHeader>
-              <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
-                <MapPin className="w-8 h-8 text-primary" />
-              </div>
-              <CardTitle className="text-2xl">Driver Portal</CardTitle>
-              <CardDescription className="text-base">
-                Update your GPS location and available seat count to help
-                students track your bus
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link to="/driver">
-                <Button className="w-full" size="lg">
-                  Open Driver Portal
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-         
-          <Card className="border-2 hover:border-primary transition-all duration-200 hover:shadow-lg">
-            <CardHeader>
-              <div className="bg-primary/10 p-3 rounded-xl w-fit mb-3">
-                <Settings className="w-8 h-8 text-primary" />
-              </div>
-              <CardTitle className="text-2xl">Admin Portal</CardTitle>
-              <CardDescription className="text-base">
-                Modify and add drivers + buses
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link to="/admin">
-                <Button className="w-full" size="lg">
-                  Open Admin Portal
-                </Button>
-              </Link>
-            </CardContent>
-          </Card> */}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="w-full text-center">
+                  <Button className="w-full" size="lg">
+                    Open Admin Portal
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
 
         <div className="bg-card border border-border rounded-xl p-8 max-w-4xl mx-auto">
